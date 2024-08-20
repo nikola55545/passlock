@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "650200152419",
+    "project_id": "valutnest",
+    "storage_bucket": "valutnest.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:650200152419:android:01924494be3e0e1c073b56",
+        "android_client_info": {
+          "package_name": "com.nikola.vaultnest"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCfWr-y0EgHZ5XnRzEVnmZAU6rm_BjYbwg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
