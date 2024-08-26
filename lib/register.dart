@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:sign_in_button/sign_in_button.dart';
 
 class RegisterPage extends StatefulWidget {
   @override
@@ -144,21 +145,24 @@ class _RegisterPageState extends State<RegisterPage> {
       _validateEmailAndCheckExists(_emailController.text).then((_) {
         if (_isEmailValid && !_isEmailTaken) {
           _pageController.nextPage(
-              duration: Duration(milliseconds: 300), curve: Curves.easeInOut);
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeInOut);
         }
       });
     } else if (_pageController.page == 1) {
       _checkUsernameExists(_usernameController.text).then((_) {
         if (!_isUsernameTaken && _usernameController.text.isNotEmpty) {
           _pageController.nextPage(
-              duration: Duration(milliseconds: 300), curve: Curves.easeInOut);
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeInOut);
         }
       });
     } else if (_pageController.page == 2) {
       _validatePassword();
       if (_isPasswordValid && _isConfirmPasswordValid) {
         _pageController.nextPage(
-            duration: Duration(milliseconds: 300), curve: Curves.easeInOut);
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeInOut);
       }
     }
   }
@@ -179,14 +183,14 @@ class _RegisterPageState extends State<RegisterPage> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        content: Text("User registered successfully!"),
+        content: const Text("User registered successfully!"),
         actions: [
           TextButton(
             onPressed: () {
               Navigator.of(context).pop();
               // Optionally navigate to another screen here
             },
-            child: Text("OK"),
+            child: const Text("OK"),
           ),
         ],
       ),
@@ -203,11 +207,11 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xff10111B),
+      backgroundColor: const Color(0xff10111B),
       body: PageView(
         controller: _pageController,
         physics:
-            NeverScrollableScrollPhysics(), // Disable swipe to change pages
+            const NeverScrollableScrollPhysics(), // Disable swipe to change pages
         children: <Widget>[
           _buildEmailStep(),
           _buildUsernameStep(),
@@ -219,141 +223,323 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   Widget _buildEmailStep() {
-    return Padding(
-      padding: EdgeInsets.all(16.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          TextField(
-            controller: _emailController,
-            decoration: InputDecoration(
-              labelText: 'Enter your email',
-              errorText: !_isEmailValid
-                  ? "Invalid email format"
-                  : _isEmailTaken
-                      ? "Email is already registered"
-                      : null,
+    return Scaffold(
+      backgroundColor: const Color(0xff10111B),
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () {
+            if (_pageController.page! > 0) {
+              _pageController.previousPage(
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.easeInOut,
+              );
+            }
+          },
+        ),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            const Text(
+              "Let's get started!",
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
             ),
-            onChanged: (value) {
-              setState(() {
-                _isEmailValid = true; // Reset the validation state
-                _isEmailTaken = false; // Reset the duplicate check state
-              });
-            },
-            onSubmitted: (value) =>
-                _validateEmailAndCheckExists(value), // Validate on submit
-          ),
-          SizedBox(height: 20),
-          ElevatedButton(
-            onPressed: (_isEmailValid && !_isEmailTaken && !_isCheckingEmail)
-                ? _nextPage
-                : null,
-            child: Text('Next'),
-          ),
-        ],
+            const SizedBox(height: 20),
+            SignInButton(
+              Buttons.google,
+              text: "Continue with Google",
+              onPressed: () {},
+            ),
+            const SizedBox(height: 10),
+            const Text(
+              "or",
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+            const SizedBox(height: 10),
+            const Text(
+              "Enter your email to begin",
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.white,
+              ),
+            ),
+            const SizedBox(height: 100),
+            TextField(
+              controller: _emailController,
+              style: const TextStyle(color: Colors.white),
+              cursorColor: const Color(0xff315AF6),
+              decoration: InputDecoration(
+                focusColor: Colors.white,
+                hoverColor: Colors.white,
+                focusedBorder: const UnderlineInputBorder(
+                  borderSide: BorderSide(color: Color(0xff315AF6)),
+                ),
+                labelText: 'Enter your email',
+                labelStyle: const TextStyle(color: Colors.white),
+                errorText: !_isEmailValid
+                    ? "Invalid email format"
+                    : _isEmailTaken
+                        ? "Email is already registered"
+                        : null,
+                errorStyle: const TextStyle(color: Color(0xffDC3E47)),
+              ),
+              onChanged: (value) {
+                setState(() {
+                  _isEmailValid = true; // Reset the validation state
+                  _isEmailTaken = false; // Reset the duplicate check state
+                });
+              },
+              onSubmitted: (value) =>
+                  _validateEmailAndCheckExists(value), // Validate on submit
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                foregroundColor: const Color(0xff10111B),
+                disabledBackgroundColor: Colors.white,
+              ),
+              onPressed: (_isEmailValid && !_isEmailTaken && !_isCheckingEmail)
+                  ? _nextPage
+                  : null,
+              child: const Text('Next'),
+            ),
+          ],
+        ),
       ),
     );
   }
 
   Widget _buildUsernameStep() {
-    return Padding(
-      padding: EdgeInsets.all(16.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          TextField(
-            controller: _usernameController,
-            focusNode: _usernameFocusNode,
-            decoration: InputDecoration(
-              labelText: 'Enter your username',
-              errorText: _isUsernameTaken ? "Username is already taken" : null,
+    return Scaffold(
+      backgroundColor: const Color(0xff10111B),
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () {
+            if (_pageController.page! > 0) {
+              _pageController.previousPage(
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.easeInOut,
+              );
+            }
+          },
+        ),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            const Text(
+              "Choose a username",
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
             ),
-            onChanged: (value) {
-              setState(() {
-                _isUsernameTaken = false; // Reset the duplicate check state
-              });
-            },
-            onSubmitted: (value) =>
-                _checkUsernameExists(value), // Validate on submit
-          ),
-          SizedBox(height: 20),
-          ElevatedButton(
-            onPressed: (!_isUsernameTaken &&
-                    !_isCheckingUsername &&
-                    _usernameController.text.isNotEmpty)
-                ? _nextPage
-                : null,
-            child: Text('Next'),
-          ),
-        ],
+            const Text(
+              "Your username will be visible to others",
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.white,
+              ),
+            ),
+            const SizedBox(height: 100),
+            TextField(
+              controller: _usernameController,
+              focusNode: _usernameFocusNode,
+              style: const TextStyle(color: Colors.white),
+              cursorColor: const Color(0xff315AF6),
+              decoration: InputDecoration(
+                focusedBorder: const UnderlineInputBorder(
+                  borderSide: BorderSide(color: Color(0xff315AF6)),
+                ),
+                labelText: 'Enter your username',
+                labelStyle: const TextStyle(color: Colors.white),
+                errorText:
+                    _isUsernameTaken ? "Username is already taken" : null,
+                errorStyle: const TextStyle(color: Color(0xffDC3E47)),
+              ),
+              onChanged: (value) {
+                setState(() {
+                  _isUsernameTaken = false; // Reset the duplicate check state
+                });
+              },
+              onSubmitted: (value) =>
+                  _checkUsernameExists(value), // Validate on submit
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                foregroundColor: const Color(0xff10111B),
+                disabledBackgroundColor: Colors.white,
+              ),
+              onPressed: (!_isUsernameTaken &&
+                      !_isCheckingUsername &&
+                      _usernameController.text.isNotEmpty)
+                  ? _nextPage
+                  : null,
+              child: const Text('Next'),
+            ),
+          ],
+        ),
       ),
     );
   }
 
   Widget _buildPasswordStep() {
-    return Padding(
-      padding: EdgeInsets.all(16.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          TextField(
-            controller: _passwordController,
-            decoration: InputDecoration(
-              labelText: 'Enter your password',
-              errorText: !_isPasswordValid ? "Password cannot be empty" : null,
+    return Scaffold(
+      backgroundColor: const Color(0xff10111B),
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () {
+            if (_pageController.page! > 0) {
+              _pageController.previousPage(
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.easeInOut,
+              );
+            }
+          },
+        ),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            const Text(
+              "Set your password",
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
             ),
-            obscureText: true,
-            onChanged: (value) {
-              setState(() {
-                _isPasswordValid = true; // Reset the validation state
-              });
-            },
-          ),
-          TextField(
-            controller: _confirmPasswordController,
-            decoration: InputDecoration(
-              labelText: 'Confirm your password',
-              errorText:
-                  !_isConfirmPasswordValid ? "Passwords do not match" : null,
+            const Text(
+              "Make sure it's secure",
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.white,
+              ),
             ),
-            obscureText: true,
-            onChanged: (value) {
-              setState(() {
-                _isConfirmPasswordValid = true; // Reset the validation state
-              });
-            },
-          ),
-          SizedBox(height: 20),
-          ElevatedButton(
-            onPressed: (_isPasswordValid && _isConfirmPasswordValid)
-                ? _nextPage
-                : null,
-            child: Text('Next'),
-          ),
-        ],
+            const SizedBox(height: 100),
+            TextField(
+              controller: _passwordController,
+              style: const TextStyle(color: Colors.white),
+              cursorColor: const Color(0xff315AF6),
+              decoration: InputDecoration(
+                focusedBorder: const UnderlineInputBorder(
+                  borderSide: BorderSide(color: Color(0xff315AF6)),
+                ),
+                labelText: 'Enter your password',
+                labelStyle: const TextStyle(color: Colors.white),
+                errorText:
+                    !_isPasswordValid ? "Password cannot be empty" : null,
+                errorStyle: const TextStyle(color: Color(0xffDC3E47)),
+              ),
+              obscureText: true,
+              onChanged: (value) {
+                setState(() {
+                  _isPasswordValid = true; // Reset the validation state
+                });
+              },
+            ),
+            const SizedBox(height: 20),
+            TextField(
+              controller: _confirmPasswordController,
+              style: const TextStyle(color: Colors.white),
+              cursorColor: const Color(0xff315AF6),
+              decoration: InputDecoration(
+                focusedBorder: const UnderlineInputBorder(
+                  borderSide: BorderSide(color: Color(0xff315AF6)),
+                ),
+                labelText: 'Confirm your password',
+                labelStyle: const TextStyle(color: Colors.white),
+                errorText:
+                    !_isConfirmPasswordValid ? "Passwords do not match" : null,
+                errorStyle: const TextStyle(color: Color(0xffDC3E47)),
+              ),
+              obscureText: true,
+              onChanged: (value) {
+                setState(() {
+                  _isConfirmPasswordValid = true; // Reset the validation state
+                });
+              },
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                foregroundColor: const Color(0xff10111B),
+                disabledBackgroundColor: Colors.white,
+              ),
+              onPressed: (_isPasswordValid && _isConfirmPasswordValid)
+                  ? _nextPage
+                  : null,
+              child: const Text('Next'),
+            ),
+          ],
+        ),
       ),
     );
   }
 
   Widget _buildFinalStep() {
-    return Padding(
-      padding: EdgeInsets.all(16.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          _isDeviceInfoLoaded
-              ? Text("All set!")
-              : CircularProgressIndicator(), // Show loading if device info is not ready
-          SizedBox(height: 20),
-          ElevatedButton(
-            onPressed: _isDeviceInfoLoaded
-                ? () {
-                    _registerUser(); // Add the user data to Firebase when continue is clicked
-                  }
-                : null,
-            child: Text('Continue'),
-          ),
-        ],
+    return Scaffold(
+      backgroundColor: const Color(0xff10111B),
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () {
+            if (_pageController.page! > 0) {
+              _pageController.previousPage(
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.easeInOut,
+              );
+            }
+          },
+        ),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            _isDeviceInfoLoaded
+                ? const Text("All set!",
+                    style: TextStyle(color: Colors.white, fontSize: 24))
+                : const CircularProgressIndicator(), // Show loading if device info is not ready
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: _isDeviceInfoLoaded
+                  ? () {
+                      _registerUser(); // Add the user data to Firebase when continue is clicked
+                    }
+                  : null,
+              child: const Text('Continue'),
+            ),
+          ],
+        ),
       ),
     );
   }
