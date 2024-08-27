@@ -276,7 +276,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 color: Colors.white,
               ),
             ),
-            const SizedBox(height: 100),
+            const SizedBox(height: 50),
             TextField(
               controller: _emailController,
               style: const TextStyle(color: Colors.white),
@@ -305,12 +305,9 @@ class _RegisterPageState extends State<RegisterPage> {
               onSubmitted: (value) =>
                   _validateEmailAndCheckExists(value), // Validate on submit
             ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                foregroundColor: const Color(0xff10111B),
-                disabledBackgroundColor: Colors.white,
-              ),
+            const SizedBox(height: 100),
+            CupertinoButton(
+              color: const Color(0xff315AF6),
               onPressed: (_isEmailValid && !_isEmailTaken && !_isCheckingEmail)
                   ? _nextPage
                   : null,
@@ -354,7 +351,7 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
             ),
             const Text(
-              "Your username will be visible to others",
+              "Think of a cool one",
               style: TextStyle(
                 fontSize: 16,
                 color: Colors.white,
@@ -384,12 +381,9 @@ class _RegisterPageState extends State<RegisterPage> {
               onSubmitted: (value) =>
                   _checkUsernameExists(value), // Validate on submit
             ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                foregroundColor: const Color(0xff10111B),
-                disabledBackgroundColor: Colors.white,
-              ),
+            const SizedBox(height: 100),
+            CupertinoButton(
+              color: const Color(0xff315AF6),
               onPressed: (!_isUsernameTaken &&
                       !_isCheckingUsername &&
                       _usernameController.text.isNotEmpty)
@@ -485,12 +479,9 @@ class _RegisterPageState extends State<RegisterPage> {
                 });
               },
             ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                foregroundColor: const Color(0xff10111B),
-                disabledBackgroundColor: Colors.white,
-              ),
+            const SizedBox(height: 100),
+            CupertinoButton(
+              color: const Color(0xff315AF6),
               onPressed: (_isPasswordValid && _isConfirmPasswordValid)
                   ? _nextPage
                   : null,
