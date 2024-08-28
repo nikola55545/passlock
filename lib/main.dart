@@ -36,7 +36,7 @@ class _HomePageState extends State<HomePage> {
 
   final List<Widget> _pages = [
     HomeTab(),
-    Container(), // Empty container as placeholder for Add New
+    Container(),
     VaultTab(),
   ];
 
@@ -103,7 +103,6 @@ class _HomePageState extends State<HomePage> {
             ),
             SizedBox(height: 20),
             Text('This is the content of the Add New modal.'),
-            // Add more content or input fields as needed
           ],
         ),
       ),
