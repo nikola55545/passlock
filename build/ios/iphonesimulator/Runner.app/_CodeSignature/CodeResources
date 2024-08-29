@@ -46,7 +46,7 @@
 		</data>
 		<key>Frameworks/App.framework/App</key>
 		<data>
-		QhrewUDjNHrdbbko4xJXrpIYKD0=
+		hh4Rh92h4UTApzsi68udGk8NA14=
 		</data>
 		<key>Frameworks/App.framework/Info.plist</key>
 		<data>
@@ -54,15 +54,15 @@
 		</data>
 		<key>Frameworks/App.framework/_CodeSignature/CodeResources</key>
 		<data>
-		y/XWwtka/FUNC7anx/xndLXwFnE=
+		3MQ0L0kG2CtLcAZSwqubN6fL/iA=
 		</data>
 		<key>Frameworks/App.framework/flutter_assets/AssetManifest.bin</key>
 		<data>
-		bvy6BzulejZRTm67FvL5bsPuRbM=
+		gKuyYoLdLpuMLe5LTEQF4HzoA58=
 		</data>
 		<key>Frameworks/App.framework/flutter_assets/AssetManifest.json</key>
 		<data>
-		rHU5YdsCZNGUhx5SEYnv7FRZgzg=
+		q5DoiL7F8OfBV++Jt1OSM2CaWhA=
 		</data>
 		<key>Frameworks/App.framework/flutter_assets/FontManifest.json</key>
 		<data>
@@ -82,7 +82,7 @@
 		</data>
 		<key>Frameworks/App.framework/flutter_assets/kernel_blob.bin</key>
 		<data>
-		zTO2v7Zu3pyuY0cm2zwZu0/e0zc=
+		dtp4nAg9kvKGAkFQr9OzG1XdHFw=
 		</data>
 		<key>Frameworks/App.framework/flutter_assets/packages/font_awesome_flutter/lib/fonts/fa-brands-400.ttf</key>
 		<data>
@@ -131,6 +131,14 @@
 		<key>Frameworks/App.framework/flutter_assets/packages/sign_in_button/assets/logos/google_light.png</key>
 		<data>
 		AKzmlW2KCuNghpE/NjMH07X42V8=
+		</data>
+		<key>Frameworks/App.framework/flutter_assets/res/AppIcon.png</key>
+		<data>
+		uNx6Xmc6QTNKQHCYApEccKmsJJs=
+		</data>
+		<key>Frameworks/App.framework/flutter_assets/res/usericon.png</key>
+		<data>
+		DjUkmQ7rRwoqb6QFNMbPEn55wy0=
 		</data>
 		<key>Frameworks/App.framework/flutter_assets/shaders/ink_sparkle.frag</key>
 		<data>
@@ -649,7 +657,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			CJ0NVYCCsoZo9yetI6dXwEsGRwGvt7RDz9ObsYRGAKA=
+			ynBoq4sYH6BWhO+ObKWYhMRIigD/IHwTedmqZabyyco=
 			</data>
 		</dict>
 		<key>Frameworks/App.framework/Info.plist</key>
@@ -663,21 +671,21 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			ar946ZCCNtJOJydaCK8n9xkOeAv7W2bBN+Bsq/3/A4M=
+			yZMQL2aRatov4gS/WIQ7FjVDorA7IkWvZjNc/I1agTE=
 			</data>
 		</dict>
 		<key>Frameworks/App.framework/flutter_assets/AssetManifest.bin</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			6HFkQChbhO4WJHw8/slTs6tOHROVKaSdMW+dCq5Ndkw=
+			Rb2AAkFnVPFJH9FQa+Oh751iNXFni8SzIWl2Crb6Bwk=
 			</data>
 		</dict>
 		<key>Frameworks/App.framework/flutter_assets/AssetManifest.json</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			N+IyqncboJRSi84VX45aeZ6sCuZh1q77U2NirWegpHI=
+			bkAib4yyAJCbkjd87KS24GbZ+Pp46dbZ4fd9dFoxQPI=
 			</data>
 		</dict>
 		<key>Frameworks/App.framework/flutter_assets/FontManifest.json</key>
@@ -712,7 +720,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			8q0SqIQTrEUSRREBl/exzgIMWMs2wLfNFOEBz2hIvLY=
+			Wg+pZ9Bl6JgiJoZINVIPKW1cyYHhQwv+TvMOIXfdDco=
 			</data>
 		</dict>
 		<key>Frameworks/App.framework/flutter_assets/packages/font_awesome_flutter/lib/fonts/fa-brands-400.ttf</key>
@@ -797,6 +805,20 @@
 			<key>hash2</key>
 			<data>
 			bXLPjBfQxF0mJKnumt7b+egkIvA6byvWCu7bqUODgXc=
+			</data>
+		</dict>
+		<key>Frameworks/App.framework/flutter_assets/res/AppIcon.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			IwQ4pGC1m1p7AA7/AYKINssk43923G5/kj5iaIh204k=
+			</data>
+		</dict>
+		<key>Frameworks/App.framework/flutter_assets/res/usericon.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			PPasuEAu9i9L0CR8j3bncXFuxiDEkOpVsxtccT+/tvA=
 			</data>
 		</dict>
 		<key>Frameworks/App.framework/flutter_assets/shaders/ink_sparkle.frag</key>

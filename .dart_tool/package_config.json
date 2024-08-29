@@ -98,6 +98,12 @@
       "languageVersion": "2.18"
     },
     {
+      "name": "equatable",
+      "rootUri": "file:///Users/nikolaknezevic/.pub-cache/hosted/pub.dev/equatable-2.0.5",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "fake_async",
       "rootUri": "file:///Users/nikolaknezevic/.pub-cache/hosted/pub.dev/fake_async-1.3.1",
       "packageUri": "lib/",
@@ -168,6 +174,12 @@
       "rootUri": "file:///Users/nikolaknezevic/.pub-cache/hosted/pub.dev/font_awesome_flutter-10.7.0",
       "packageUri": "lib/",
       "languageVersion": "3.0"
+    },
+    {
+      "name": "gauge_indicator",
+      "rootUri": "file:///Users/nikolaknezevic/.pub-cache/hosted/pub.dev/gauge_indicator-0.4.3",
+      "packageUri": "lib/",
+      "languageVersion": "2.16"
     },
     {
       "name": "google_fonts",
@@ -416,7 +428,7 @@
       "languageVersion": "3.4"
     }
   ],
-  "generated": "2024-08-28T10:03:50.026778Z",
+  "generated": "2024-08-28T23:48:50.210564Z",
   "generator": "pub",
   "generatorVersion": "3.4.3",
   "flutterRoot": "file:///Users/nikolaknezevic/flutter",

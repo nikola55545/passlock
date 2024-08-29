@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 class VaultTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return CupertinoPageScaffold(
+    return const CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
         middle: Text('Vault'),
       ),
