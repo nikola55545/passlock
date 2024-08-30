@@ -22,6 +22,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return CupertinoApp(
       home: HomePage(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }

@@ -46,7 +46,7 @@
 		</data>
 		<key>Frameworks/App.framework/App</key>
 		<data>
-		hh4Rh92h4UTApzsi68udGk8NA14=
+		f2WdMBS2mbSs59HL1u/mGCZqeY8=
 		</data>
 		<key>Frameworks/App.framework/Info.plist</key>
 		<data>
@@ -54,7 +54,7 @@
 		</data>
 		<key>Frameworks/App.framework/_CodeSignature/CodeResources</key>
 		<data>
-		3MQ0L0kG2CtLcAZSwqubN6fL/iA=
+		ZYkvDqz9aNeMiquWjFr6CdGkIGo=
 		</data>
 		<key>Frameworks/App.framework/flutter_assets/AssetManifest.bin</key>
 		<data>
@@ -70,7 +70,7 @@
 		</data>
 		<key>Frameworks/App.framework/flutter_assets/NOTICES.Z</key>
 		<data>
-		wBGHEWkw9AfTjZD0QsBF3ckQUtc=
+		7WSSvP9ys9Ige051jso8UFgryVE=
 		</data>
 		<key>Frameworks/App.framework/flutter_assets/fonts/MaterialIcons-Regular.otf</key>
 		<data>
@@ -82,7 +82,7 @@
 		</data>
 		<key>Frameworks/App.framework/flutter_assets/kernel_blob.bin</key>
 		<data>
-		dtp4nAg9kvKGAkFQr9OzG1XdHFw=
+		br3AX79WskaRf664H7zA9YJRszk=
 		</data>
 		<key>Frameworks/App.framework/flutter_assets/packages/font_awesome_flutter/lib/fonts/fa-brands-400.ttf</key>
 		<data>
@@ -657,7 +657,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			ynBoq4sYH6BWhO+ObKWYhMRIigD/IHwTedmqZabyyco=
+			9oZdePxYDdc/0wTiNzHqeSKfDmv6l8+3z2EQT+Yu30w=
 			</data>
 		</dict>
 		<key>Frameworks/App.framework/Info.plist</key>
@@ -671,7 +671,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			yZMQL2aRatov4gS/WIQ7FjVDorA7IkWvZjNc/I1agTE=
+			XYH16JcN9+XFMrKRQh+nhnLdzcdjQZexxJRhDeyfU2k=
 			</data>
 		</dict>
 		<key>Frameworks/App.framework/flutter_assets/AssetManifest.bin</key>
@@ -699,7 +699,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			ok648myadvINLdAq54GJoJpi603kuBVCemJorMs1VNQ=
+			UxNVeA3je6PyTy021fljaUoxRIfmyxT0vtilsamCRto=
 			</data>
 		</dict>
 		<key>Frameworks/App.framework/flutter_assets/fonts/MaterialIcons-Regular.otf</key>
@@ -720,7 +720,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			Wg+pZ9Bl6JgiJoZINVIPKW1cyYHhQwv+TvMOIXfdDco=
+			zdLtnNB5uMHewVIenotnhOVd48Y5fwY9XDAXMzqMlsc=
 			</data>
 		</dict>
 		<key>Frameworks/App.framework/flutter_assets/packages/font_awesome_flutter/lib/fonts/fa-brands-400.ttf</key>

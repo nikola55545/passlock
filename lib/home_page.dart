@@ -3,7 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gauge_indicator/gauge_indicator.dart';
 
-class HomeTab extends StatelessWidget {
+class HomeTab extends StatefulWidget {
+  @override
+  _HomeTabState createState() => _HomeTabState();
+}
+
+class _HomeTabState extends State<HomeTab> with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<int> _animation;
+
   final List<Map<String, String>> recentActivities = [
     {"title": "Login from new device", "subtitle": "2 hours ago"},
     {"title": "Password changed", "subtitle": "1 day ago"},
@@ -11,6 +19,30 @@ class HomeTab extends StatelessWidget {
     {"title": "Security question added", "subtitle": "1 week ago"},
     {"title": "New account added", "subtitle": "2 weeks ago"},
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(seconds: 1),
+      vsync: this,
+    );
+
+    _animation = IntTween(begin: 0, end: 131).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: Curves.easeInOutCubic,
+      ),
+    );
+
+    _controller.forward();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -88,7 +120,15 @@ class HomeTab extends StatelessWidget {
                           const SizedBox(height: 20),
                           Row(
                             children: [
-                              const Text("131", style: TextStyle(fontSize: 48)),
+                              AnimatedBuilder(
+                                animation: _animation,
+                                builder: (context, child) {
+                                  return Text(
+                                    '${_animation.value}',
+                                    style: const TextStyle(fontSize: 48),
+                                  );
+                                },
+                              ),
                               const SizedBox(width: 10),
                               const Text("Accounts"),
                               const Spacer(),
