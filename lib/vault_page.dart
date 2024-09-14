@@ -88,6 +88,21 @@ class VaultTab extends StatelessWidget {
                             horizontal: 20, vertical: 10),
                         child: Row(
                           children: [
+                            CircleAvatar(
+                              backgroundColor: //randomColor(),
+                                  Colors.primaries[
+                                      index % Colors.primaries.length],
+                              radius: 20,
+                              child: Text(
+                                item["title"]![0], // First letter of the title
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 20,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 15),
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
