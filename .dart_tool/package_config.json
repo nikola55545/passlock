@@ -86,6 +86,12 @@
       "languageVersion": "3.4"
     },
     {
+      "name": "cupertino_icons",
+      "rootUri": "file:///Users/nikolaknezevic/.pub-cache/hosted/pub.dev/cupertino_icons-1.0.8",
+      "packageUri": "lib/",
+      "languageVersion": "3.1"
+    },
+    {
       "name": "device_info_plus",
       "rootUri": "file:///Users/nikolaknezevic/.pub-cache/hosted/pub.dev/device_info_plus-10.1.2",
       "packageUri": "lib/",
@@ -156,6 +162,12 @@
       "rootUri": "file:///Users/nikolaknezevic/.pub-cache/hosted/pub.dev/flutter_lints-3.0.2",
       "packageUri": "lib/",
       "languageVersion": "3.1"
+    },
+    {
+      "name": "flutter_password_strength",
+      "rootUri": "file:///Users/nikolaknezevic/.pub-cache/hosted/pub.dev/flutter_password_strength-0.1.6",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
     },
     {
       "name": "flutter_test",
@@ -258,6 +270,12 @@
       "rootUri": "file:///Users/nikolaknezevic/.pub-cache/hosted/pub.dev/modal_bottom_sheet-3.0.0",
       "packageUri": "lib/",
       "languageVersion": "3.3"
+    },
+    {
+      "name": "password_strength_checker",
+      "rootUri": "file:///Users/nikolaknezevic/.pub-cache/hosted/pub.dev/password_strength_checker-1.2.4",
+      "packageUri": "lib/",
+      "languageVersion": "2.18"
     },
     {
       "name": "path",
@@ -428,7 +446,7 @@
       "languageVersion": "3.4"
     }
   ],
-  "generated": "2024-08-28T23:48:50.210564Z",
+  "generated": "2024-09-15T01:25:38.950066Z",
   "generator": "pub",
   "generatorVersion": "3.4.3",
   "flutterRoot": "file:///Users/nikolaknezevic/flutter",

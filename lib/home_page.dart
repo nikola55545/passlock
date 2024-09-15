@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart'; // Firestore import
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gauge_indicator/gauge_indicator.dart';
+import 'vault_page.dart';
 
 class HomeTab extends StatefulWidget {
   @override
@@ -10,32 +12,61 @@ class HomeTab extends StatefulWidget {
 
 class _HomeTabState extends State<HomeTab> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
-  late Animation<int> _animation;
-
-  final List<Map<String, String>> recentActivities = [
-    {"title": "Login from new device", "subtitle": "2 hours ago"},
-    {"title": "Password changed", "subtitle": "1 day ago"},
-    {"title": "Vault backed up", "subtitle": "3 days ago"},
-    {"title": "Security question added", "subtitle": "1 week ago"},
-    {"title": "New account added", "subtitle": "2 weeks ago"},
-  ];
+  Animation<int>? _animation; // Nullable animation
+  bool _isAnimationInitialized = false; // Track animation initialization
+  double _passwordStrength = 0.0; // Password strength
 
   @override
   void initState() {
     super.initState();
+
     _controller = AnimationController(
       duration: const Duration(seconds: 1),
       vsync: this,
     );
 
-    _animation = IntTween(begin: 0, end: 131).animate(
-      CurvedAnimation(
-        parent: _controller,
-        curve: Curves.easeInOutCubic,
-      ),
-    );
+    // Fetch the document count asynchronously
+    FirebaseFirestore.instance.collection('credentials').get().then((snapshot) {
+      int documentCount = snapshot.size; // This is the count of documents
 
-    _controller.forward();
+      List passwords = snapshot.docs.map((doc) {
+        return doc.data()['password'];
+      }).toList();
+      setState(() {
+        // Initialize the animation with the fetched document count
+        _animation = IntTween(
+          begin: 0,
+          end: documentCount,
+        ).animate(
+          CurvedAnimation(
+            parent: _controller,
+            curve: Curves.easeInOutCubic,
+          ),
+        );
+
+        // Calculate the password strength
+        _passwordStrength = _calculatePasswordStrength(passwords.join());
+        print("Password strength: $_passwordStrength");
+
+        _isAnimationInitialized = true; // Mark animation as initialized
+
+        // Forward the animation
+        _controller.forward();
+      });
+    });
+  }
+
+  double _calculatePasswordStrength(String password) {
+    // Use a simple password strength evaluation or use a package to calculate the strength
+    double strength = 0.0;
+
+    // Example strength calculation (you can use a more sophisticated method/library)
+    if (password.length >= 8) strength += 0.25;
+    if (RegExp(r'[A-Z]').hasMatch(password)) strength += 0.25;
+    if (RegExp(r'[0-9]').hasMatch(password)) strength += 0.25;
+    if (RegExp(r'[!@#$%^&*(),.?":{}|<>]').hasMatch(password)) strength += 0.25;
+
+    return strength; // Returns strength as a fraction (0 to 1)
   }
 
   @override
@@ -120,15 +151,21 @@ class _HomeTabState extends State<HomeTab> with SingleTickerProviderStateMixin {
                           const SizedBox(height: 20),
                           Row(
                             children: [
-                              AnimatedBuilder(
-                                animation: _animation,
-                                builder: (context, child) {
-                                  return Text(
-                                    '${_animation.value}',
-                                    style: const TextStyle(fontSize: 48),
-                                  );
-                                },
-                              ),
+                              if (_isAnimationInitialized)
+                                AnimatedBuilder(
+                                  animation: _animation!,
+                                  builder: (context, child) {
+                                    return Text(
+                                      '${_animation!.value}',
+                                      style: const TextStyle(fontSize: 48),
+                                    );
+                                  },
+                                )
+                              else
+                                const Text(
+                                  '...', // Show loading text until animation is initialized
+                                  style: TextStyle(fontSize: 48),
+                                ),
                               const SizedBox(width: 10),
                               const Text("Accounts"),
                               const Spacer(),
@@ -145,7 +182,7 @@ class _HomeTabState extends State<HomeTab> with SingleTickerProviderStateMixin {
                                 duration: const Duration(seconds: 3),
                                 curve: Curves.elasticOut,
                                 radius: 60,
-                                value: 78,
+                                value: _passwordStrength,
                                 axis: const GaugeAxis(
                                     min: 0,
                                     max: 100,
@@ -192,29 +229,6 @@ class _HomeTabState extends State<HomeTab> with SingleTickerProviderStateMixin {
                             ],
                           ),
                           const SizedBox(height: 20),
-                          Row(
-                            children: [
-                              const FaIcon(
-                                FontAwesomeIcons.exclamationTriangle,
-                                color: Colors.red,
-                                size: 14,
-                              ),
-                              const SizedBox(width: 10),
-                              const Text("Security Risks Detected: 8",
-                                  style: TextStyle(fontSize: 14)),
-                              const Spacer(),
-                              CupertinoButton(
-                                child: const Text("View",
-                                    style: TextStyle(
-                                        fontSize: 12,
-                                        color: Colors.grey,
-                                        fontWeight: FontWeight.bold)),
-                                onPressed: () {
-                                  print("View");
-                                },
-                              )
-                            ],
-                          )
                         ],
                       ),
                     )),
@@ -223,89 +237,131 @@ class _HomeTabState extends State<HomeTab> with SingleTickerProviderStateMixin {
                 height: 1,
                 color: const Color(0xff39393B),
               ),
-              Container(
-                decoration: const BoxDecoration(
-                  color: Color(0xff181A24),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 10, left: 20),
-                  child: Row(
-                    children: [
-                      const Text("Recent Activity",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          )),
-                      const Spacer(),
-                      CupertinoButton(
-                        child: const Text("View All",
-                            style: TextStyle(
-                                fontSize: 12,
-                                color: Colors.grey,
-                                fontWeight: FontWeight.bold)),
-                        onPressed: () {
-                          print("View All");
-                        },
-                      )
-                    ],
-                  ),
-                ),
-              ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 0),
-                child: Column(
-                  children: recentActivities.map((item) {
-                    int index = recentActivities.indexOf(item);
-                    return Container(
-                      decoration: BoxDecoration(
-                        color: index % 2 == 0
-                            ? const Color(0xff1F212E)
-                            : const Color(0xff181A24),
+                padding: const EdgeInsets.all(20.0),
+                child: Row(
+                  children: [
+                    const Text(
+                      "Recent Credentials",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
                       ),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 10),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  item["title"]!,
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                const SizedBox(height: 5),
-                                Text(
-                                  item["subtitle"]!,
-                                  style: const TextStyle(
-                                    color: Colors.grey,
-                                    fontSize: 14,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          const FaIcon(
-                            FontAwesomeIcons.chevronRight,
-                            color: Colors.grey,
-                            size: 16,
-                          ),
-                        ],
+                    ),
+                    const Spacer(),
+                    //on tap
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          CupertinoPageRoute(builder: (context) => VaultTab()),
+                        );
+                      },
+                      child: const Text(
+                        "View all",
+                        style: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 14,
+                        ),
                       ),
-                    );
-                  }).toList(),
+                    ),
+                  ],
                 ),
               ),
+              _buildRecentCredentialsList(),
               const SizedBox(height: 50), // Add some space at the bottom
             ],
           ),
         ),
       ),
+    );
+  }
+
+  // This function builds the recent credentials list
+  Widget _buildRecentCredentialsList() {
+    return StreamBuilder<QuerySnapshot>(
+      stream: FirebaseFirestore.instance
+          .collection('credentials')
+          .orderBy('created_at', descending: true)
+          .limit(7)
+          .snapshots(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(
+            child: CupertinoActivityIndicator(),
+          );
+        }
+        if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+          return const Center(
+            child: Text(
+              "No recent credentials found.",
+              style: TextStyle(color: Colors.white),
+            ),
+          );
+        }
+        final credentials = snapshot.data!.docs;
+
+        return Column(
+          children: credentials.map((doc) {
+            Map<String, dynamic> item = doc.data() as Map<String, dynamic>;
+            int index = credentials.indexOf(doc);
+            return Container(
+              decoration: BoxDecoration(
+                color: index % 2 == 0
+                    ? const Color(0xff1F212E)
+                    : const Color(0xff181A24),
+              ),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              child: Row(
+                children: [
+                  CircleAvatar(
+                    backgroundColor:
+                        Colors.primaries[index % Colors.primaries.length],
+                    radius: 20,
+                    child: Text(
+                      item["name"]?[0] ?? '', // First letter of the name
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.normal,
+                        fontSize: 20,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 15),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          item["name"] ?? 'No name',
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 5),
+                        Text(
+                          item["website"] ?? 'No website',
+                          style: const TextStyle(
+                            color: Colors.grey,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const FaIcon(
+                    FontAwesomeIcons.chevronRight,
+                    color: Colors.grey,
+                    size: 16,
+                  ),
+                ],
+              ),
+            );
+          }).toList(),
+        );
+      },
     );
   }
 }

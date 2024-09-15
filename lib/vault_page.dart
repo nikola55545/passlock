@@ -1,16 +1,36 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart'; // Import Firestore
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'single_item.dart';
 
-class VaultTab extends StatelessWidget {
-  final List<Map<String, String>> credentials = [
-    {"title": "Google Account", "subtitle": "email@gmail.com"},
-    {"title": "Facebook Account", "subtitle": "email@facebook.com"},
-    {"title": "Twitter Account", "subtitle": "email@twitter.com"},
-    {"title": "GitHub Account", "subtitle": "email@github.com"},
-    {"title": "LinkedIn Account", "subtitle": "email@linkedin.com"},
-  ];
+class VaultTab extends StatefulWidget {
+  @override
+  _VaultTabState createState() => _VaultTabState();
+}
+
+class _VaultTabState extends State<VaultTab> {
+  TextEditingController _searchController = TextEditingController();
+  String _searchText = "";
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Listen for changes in the search field
+    _searchController.addListener(() {
+      setState(() {
+        _searchText = _searchController.text;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +44,7 @@ class VaultTab extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text("Vault",
+                  const Text("My Credentials",
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 24,
@@ -50,19 +70,21 @@ class VaultTab extends StatelessWidget {
                 children: [
                   Expanded(
                     child: CupertinoTextField(
-                        placeholder: "Search Credentials",
-                        decoration: BoxDecoration(
-                          color: const Color(0xff181A24),
-                          borderRadius: BorderRadius.circular(10),
+                      controller: _searchController,
+                      placeholder: "Search Credentials",
+                      decoration: BoxDecoration(
+                        color: const Color(0xff181A24),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      prefix: const Padding(
+                        padding: EdgeInsets.only(left: 10),
+                        child: FaIcon(
+                          FontAwesomeIcons.search,
+                          size: 16,
+                          color: Color(0xff39393B),
                         ),
-                        prefix: const Padding(
-                          padding: EdgeInsets.only(left: 10),
-                          child: FaIcon(
-                            FontAwesomeIcons.search,
-                            size: 16,
-                            color: Color(0xff39393B),
-                          ),
-                        )),
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -72,71 +94,127 @@ class VaultTab extends StatelessWidget {
               color: const Color(0xff39393B),
             ),
             Expanded(
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 0),
-                  child: Column(
-                    children: credentials.map((item) {
-                      int index = credentials.indexOf(item);
-                      return Container(
-                        decoration: BoxDecoration(
-                          color: index % 2 == 0
-                              ? const Color(0xff1F212E)
-                              : const Color(0xff181A24),
-                        ),
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 20, vertical: 10),
-                        child: Row(
-                          children: [
-                            CircleAvatar(
-                              backgroundColor: //randomColor(),
-                                  Colors.primaries[
-                                      index % Colors.primaries.length],
-                              radius: 20,
-                              child: Text(
-                                item["title"]![0], // First letter of the title
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 20,
+              child: StreamBuilder<QuerySnapshot>(
+                stream: FirebaseFirestore.instance
+                    .collection('credentials')
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CupertinoActivityIndicator(),
+                    );
+                  }
+                  if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                    return const Center(
+                      child: Text(
+                        "No credentials found.",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    );
+                  }
+                  final credentials = snapshot.data!.docs;
+
+                  // Filter the credentials based on the search input
+                  final filteredCredentials = credentials.where((doc) {
+                    Map<String, dynamic> item =
+                        doc.data() as Map<String, dynamic>;
+                    final name = item["name"]?.toLowerCase() ?? '';
+                    final website = item["website"]?.toLowerCase() ?? '';
+                    final searchLower = _searchText.toLowerCase();
+                    return name.contains(searchLower) ||
+                        website.contains(searchLower);
+                  }).toList();
+
+                  return SingleChildScrollView(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 0),
+                      child: Column(
+                        children: filteredCredentials.map((doc) {
+                          Map<String, dynamic> item =
+                              doc.data() as Map<String, dynamic>;
+                          int index = filteredCredentials.indexOf(doc);
+
+                          return GestureDetector(
+                            onTap: () {
+                              // Navigate to the CredentialDetailsPage
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => CredentialDetailsPage(
+                                    username: item['username'] ?? 'No username',
+                                    password: item['password'] ?? 'No password',
+                                    website: item['website'] ?? 'No website',
+                                    note: item['note'] ?? 'No note provided',
+                                  ),
                                 ),
+                              );
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: index % 2 == 0
+                                    ? const Color(0xff1F212E)
+                                    : const Color(0xff181A24),
                               ),
-                            ),
-                            const SizedBox(width: 15),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 20, vertical: 10),
+                              child: Row(
                                 children: [
-                                  Text(
-                                    item["title"]!,
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
+                                  CircleAvatar(
+                                    backgroundColor: Colors.primaries[
+                                        index % Colors.primaries.length],
+                                    radius: 20,
+                                    child: Text(
+                                      item["name"]?[0] ??
+                                          '', // Ensure it's not null
+                                      style: const TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.normal,
+                                          fontSize: 20,
+                                          textBaseline:
+                                              TextBaseline.alphabetic),
                                     ),
                                   ),
-                                  const SizedBox(height: 5),
-                                  Text(
-                                    item["subtitle"]!,
-                                    style: const TextStyle(
-                                      color: Colors.grey,
-                                      fontSize: 14,
+                                  const SizedBox(width: 15),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          item["name"] ??
+                                              'No username', // Fallback value if null
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 5),
+                                        Text(
+                                          item["website"] ??
+                                              'No website', // Fallback value if null
+                                          style: const TextStyle(
+                                            color: Colors.grey,
+                                            fontSize: 14,
+                                          ),
+                                        ),
+                                      ],
                                     ),
+                                  ),
+                                  const FaIcon(
+                                    FontAwesomeIcons.chevronRight,
+                                    color: Colors.grey,
+                                    size: 16,
                                   ),
                                 ],
                               ),
                             ),
-                            const FaIcon(
-                              FontAwesomeIcons.chevronRight,
-                              color: Colors.grey,
-                              size: 16,
-                            ),
-                          ],
-                        ),
-                      );
-                    }).toList(),
-                  ),
-                ),
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                  );
+                },
               ),
             ),
           ],
@@ -171,7 +249,6 @@ class VaultTab extends StatelessWidget {
                 fontSize: 16,
               ),
             ),
-            // Add more widgets here for your modal content
           ],
         ),
       ),
